@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "12185941734",
+    "firebase_url": "https://lightpay-a667c-default-rtdb.firebaseio.com",
+    "project_id": "lightpay-a667c",
+    "storage_bucket": "lightpay-a667c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12185941734:android:5aa857cc1d88a10ac0ad27",
+        "android_client_info": {
+          "package_name": "com.example.finalproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYJjnv8jNKU7zEe-wH2T4M0FOykb_NBqo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12185941734:android:63ee0296ef7f3127c0ad27",
+        "android_client_info": {
+          "package_name": "com.example.lightpay"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYJjnv8jNKU7zEe-wH2T4M0FOykb_NBqo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

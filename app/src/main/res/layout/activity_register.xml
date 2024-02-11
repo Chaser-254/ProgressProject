@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    android:background="@drawable/white1">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white"
+        app:cardCornerRadius="50dp">
+
+        <ImageView
+            android:id="@+id/logoImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/light1"
+            android:contentDescription="LightPAY" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/text_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/register_to_lightpay"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:textStyle="normal"
+        android:layout_marginTop="0dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:hintTextColor="@color/black"
+        android:hint="Enter your Email Address"
+        app:boxStrokeColor="@color/black">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:inputType="textEmailAddress|textNoSuggestions" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:counterEnabled="true"
+        android:hint="Enter your Password"
+        app:hintTextColor="@color/black"
+        app:counterMaxLength="12"
+        app:endIconMode="password_toggle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:counterEnabled="true"
+        android:hint="Confirm Your Password"
+        app:hintTextColor="@color/black"
+        app:counterMaxLength="12"
+        app:endIconMode="password_toggle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:textStyle="normal"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/dark_blue" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/RegisterWithGoogleBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
+        android:insetTop="0dp"
+        app:cornerRadius="40dp"
+        android:insetBottom="0dp"
+        app:icon="@mipmap/google"
+        android:gravity="center"
+        app:iconSize="52dp"
+        android:background="@null"
+        app:iconTint="@null"
+        android:text="Register using Google"/>
+
+    <TextView
+        android:id="@+id/text_register1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Already a User? Login Now"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:layout_marginTop="24dp" />
+
+</LinearLayout>

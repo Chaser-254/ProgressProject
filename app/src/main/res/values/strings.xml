@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">lightPAY</string>
+    <string name="register">Register</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register_to_lightpay">Register to LightPAY</string>
+    <string name="login">Login</string>
+</resources>
