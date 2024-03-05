@@ -125,7 +125,7 @@
         android:insetTop="0dp"
         app:cornerRadius="40dp"
         android:insetBottom="0dp"
-        app:icon="@mipmap/google"
+        app:icon="@drawable/google"
         android:gravity="center"
         app:iconSize="52dp"
         app:iconTint="@null"

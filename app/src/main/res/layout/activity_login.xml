@@ -5,23 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    tools:context=".LoginActivity"
     android:padding="16dp"
-    android:background="@drawable/white1">
+    android:background="@color/primary">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:layout_gravity="center"
         app:cardCornerRadius="80dp"
-        android:background="@color/white">
+        android:backgroundTint="@color/primary">
 
         <ImageView
             android:id="@+id/logoImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/light1"
-            android:contentDescription="LightPAY" />
+            android:src="@drawable/person2"
+            android:contentDescription="@string/lightpay" />
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -29,7 +30,7 @@
         android:id="@+id/text_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login to LightPAY"
+        android:text="@string/login_to_lightpay"
         android:textSize="20sp"
         android:textStyle="normal"
         android:textColor="@color/black"
@@ -45,7 +46,7 @@
         app:boxCornerRadiusBottomStart="2dp"
         app:boxCornerRadiusTopEnd="2dp"
         app:boxCornerRadiusTopStart="2dp"
-        android:hint="Enter your Email Address"
+        android:hint="@string/enter_your_email_address"
         android:textColorHint="@color/black"
         app:boxStrokeWidth="2dp">
 
@@ -53,9 +54,10 @@
             android:id="@+id/login_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textEmailAddress |textNoSuggestions"
             android:textColor="@color/black"
-            android:textSize="16sp"
-            android:inputType="textEmailAddress |textNoSuggestions"/>
+            android:textColorHint="#01579B"
+            android:textSize="16sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,67 +74,76 @@
         app:endIconCheckable="true"
         app:endIconMode="password_toggle"
         app:boxCornerRadiusTopStart="2dp"
-        android:hint="Enter your Password"
+        android:hint="@string/enter_your_password"
         android:textColorHint="@color/black"
         app:boxStrokeWidth="2dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/login_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
             android:textColor="@color/black"
-            android:textColorHint="@color/black" />
+            android:layout_height="wrap_content"
+            android:textSize="18sp"/>
 
     </com.google.android.material.textfield.TextInputLayout>
     <Button
         android:id="@+id/login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
         android:text="@string/login"
         android:textColor="@color/white"
         android:textStyle="normal"
+        android:layout_gravity="center"
         android:textSize="20sp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         android:backgroundTint="@color/dark_blue" />
 
     <TextView
         android:id="@+id/text_forgotPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Forgot Password? reset now"
+        android:text="@string/forgot_password"
         android:textColor="@color/black"
         android:textStyle="normal"
         android:gravity="center"
         android:textSize="15sp"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="18dp" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/loginWithGoogleBtn"
+        android:id="@+id/google_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="5dp"
         android:textColor="@color/black"
+        style="@style/Widget.AppCompat.Button"
         android:insetTop="0dp"
+        app:cornerRadius="60dp"
         android:insetBottom="0dp"
-        app:icon="@mipmap/google"
-        android:background="@null"
+        app:icon="@drawable/google"
         android:gravity="center"
-        app:iconSize="52dp"
+        app:iconSize="42dp"
+        android:background="@null"
         app:iconTint="@null"
-        android:text="login with Google"/>
+        android:text="Login using Google"/>
 
     <TextView
         android:id="@+id/text_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New User? Register Now"
+        android:text="@string/new_user_register_now"
         android:textColor="@color/black"
         android:textStyle="normal"
         android:gravity="center"
         android:textSize="15sp"
         android:layout_marginTop="24dp" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/loginProgressBar"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"/>
 
 
 </LinearLayout>

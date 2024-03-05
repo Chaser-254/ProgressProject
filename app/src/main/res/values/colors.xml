@@ -7,7 +7,17 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="primary">#C1CBD5</color>
+    <color name="secondary">#595750</color>
+    <color name="off_white">#FDFDFD</color>
+    <color name="light_gray">#C3C3C3</color>
     <color name="dark_blue">#00427A</color>
+    <color name="platinum">#E5E4E2</color>
     <color name="light_blue">#005FAF</color>
+    <color name="steel_grey">#71797E</color>
+    <color name="night_mode">#612481</color>
+    <color name="notifications">#1382C3</color>
+    <color name="private_account">#E6A326</color>
+    <color name="security">#D95F69</color>
     <color name="red">#FF0000</color>
 </resources>

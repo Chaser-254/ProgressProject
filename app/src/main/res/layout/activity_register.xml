@@ -5,17 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegisterActivity"
-    android:layout_margin="10dp"
     android:orientation="vertical"
-    android:background="@drawable/white1">
+    android:background="@color/primary">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/white"
+        android:layout_marginTop="20dp"
+        app:strokeColor="@color/black"
+        android:backgroundTint="@color/primary"
         app:cardCornerRadius="50dp">
 
         <ImageView
@@ -23,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            android:src="@drawable/light1"
+            android:background="@color/black"
+            android:src="@drawable/user_login_register"
             android:contentDescription="LightPAY" />
 
     </com.google.android.material.card.MaterialCardView>
@@ -46,7 +46,29 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         app:hintTextColor="@color/black"
-        android:hint="Enter your Email Address"
+        android:textColorHint="@color/black"
+        android:hint="Enter your Full Names"
+        app:boxStrokeColor="@color/black">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:inputType="textEmailAddress|textNoSuggestions" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:hintTextColor="@color/black"
+        android:textColorHint="@color/black"
+        android:hint="Enter your Email ID"
         app:boxStrokeColor="@color/black">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -66,8 +88,9 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         app:counterEnabled="true"
+        android:textColorHint="@color/black"
+        app:boxStrokeColor="@color/black"
         android:hint="Enter your Password"
-        app:hintTextColor="@color/black"
         app:counterMaxLength="12"
         app:endIconMode="password_toggle">
 
@@ -84,29 +107,30 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         app:counterEnabled="true"
-        android:hint="Confirm Your Password"
-        app:hintTextColor="@color/black"
-        app:counterMaxLength="12"
-        app:endIconMode="password_toggle">
+        android:textColorHint="@color/black"
+        app:boxStrokeColor="@color/black"
+        android:hint="Enter your Phone Number"
+        app:counterMaxLength="10">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/register_confirm_password"
+            android:id="@+id/register_Phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:inputType="textPassword" />
+            android:inputType="textPhonetic" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
+
     <Button
         android:id="@+id/register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
         android:text="@string/register"
         android:textSize="18sp"
         android:textColor="@color/white"
@@ -119,15 +143,15 @@
         android:id="@+id/RegisterWithGoogleBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
         android:layout_marginTop="5dp"
         android:textColor="@color/black"
+        style="@style/Widget.AppCompat.Button"
         android:insetTop="0dp"
-        app:cornerRadius="40dp"
+        app:cornerRadius="60dp"
         android:insetBottom="0dp"
-        app:icon="@mipmap/google"
+        app:icon="@drawable/google"
         android:gravity="center"
-        app:iconSize="52dp"
+        app:iconSize="42dp"
         android:background="@null"
         app:iconTint="@null"
         android:text="Register using Google"/>
@@ -141,5 +165,12 @@
         android:gravity="center"
         android:textSize="15sp"
         android:layout_marginTop="24dp" />
+    <ProgressBar
+        android:id="@+id/regProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="14dp"/>
 
 </LinearLayout>
