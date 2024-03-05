@@ -1,0 +1,6 @@
+<resources>
+    <!-- Menu item text appearance style -->
+    <style name="MenuTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Menu">
+        <item name="android:textColor">@color/black</item>
+    </style>
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LogoutFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/message_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="60dp"
+        android:textColor="@color/black"
+        android:textStyle="normal"
+        android:layout_alignParentTop="true"
+        android:text="You are about to logout of lightPAY app,if you are certain about the action,press the logout button below"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/message_text"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/black"
+        android:layout_margin="8dp"
+        android:text="Logout" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:layout_marginStart="170dp"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+</RelativeLayout>
