@@ -74,4 +74,8 @@
     <string name="reset_password">Reset Password</string>
     <string name="pay">Pay</string>
     <string name="login_using_google">Login using Google</string>
+    <string name="welcome_to_lightpay">Welcome to lightPAY</string>
+    <string name="lightpay_is_a_faster_means_of_payment_that_is_easier_to_use_for_transaction_that_involve_larger_sums_of_money_in_a_simple_and_faster_way_possible_saving_you_time_and_energy">lightPAY is a faster means of payment that is easier to use for transaction that involve larger sums of money in a simple and faster way possible saving you time and energy</string>
+    <string name="transact_now">Transact now!</string>
+    <string name="fast_services">Fast Services</string>
 </resources>

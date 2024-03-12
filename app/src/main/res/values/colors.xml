@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -11,8 +11,10 @@
     <color name="secondary">#595750</color>
     <color name="off_white">#FDFDFD</color>
     <color name="light_gray">#C3C3C3</color>
+    <color name="home">#2C3E50</color>
     <color name="login">#141E30</color>
     <color name="dark_blue">#00427A</color>
+    <color name="sky" tools:ignore="MissingDefaultResource">#CFDEF3</color>
     <color name="platinum">#E5E4E2</color>
     <color name="light_blue">#005FAF</color>
     <color name="steel_grey">#71797E</color>

@@ -3,15 +3,120 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:background="@drawable/dack"
     android:orientation="vertical"
     tools:context=".HomeActivity">
 
-    <TextView
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/dack"
+            android:padding="20dp"
+            tools:ignore="UselessParent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/home_textview"
+                android:textColor="@color/off_white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:text="@string/welcome_to_lightpay"/>
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/back"
+        android:padding="20dp"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/off_white"
+            android:textSize="24sp"
+            android:textStyle="normal"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:letterSpacing="0.05"
+            android:text="@string/lightpay_is_a_faster_means_of_payment_that_is_easier_to_use_for_transaction_that_involve_larger_sums_of_money_in_a_simple_and_faster_way_possible_saving_you_time_and_energy"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/transactBtn"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:text="@string/transact"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginStart="80dp"
+        android:textSize="24sp"
+        android:textAlignment="center"
+        android:layout_marginTop="400dp"
+        android:backgroundTint="@color/light_blue"/>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/links"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="480dp"
+            android:gravity="center"
+            android:text="Fast Links"
+            android:textColor="@color/off_white"
+            android:textSize="28sp"
+            tools:ignore="HardcodedText,TextSizeCheck">
+        </TextView>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="550dp"
+        android:background="@drawable/background_button"
+        android:padding="10dp">
+
+    <ImageButton
+        android:id="@+id/linkDeposit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="40sp"
-        android:textColor="@color/black"
-        android:layout_centerInParent="true"
-        android:text="Account" />
+        android:background="@null"
+        android:layout_marginEnd="50dp"
+        android:src="@drawable/deposit"
+        android:tooltipText="@string/deposit"
+        tools:ignore="ContentDescription,UnusedAttribute,SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck" />
 
-</RelativeLayout>
+    <ImageButton
+        android:id="@+id/linkTransfer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_marginEnd="30dp"
+        android:src="@drawable/transfer"
+        android:tooltipText="@string/transact"
+        tools:ignore="ContentDescription,UnusedAttribute,SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck" />
+
+    <ImageButton
+        android:id="@+id/linkWithdrawal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_marginEnd="15dp"
+        android:src="@drawable/withdraw"
+        android:tooltipText="@string/withdraw"
+        tools:ignore="ContentDescription,UnusedAttribute,SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck" />
+</LinearLayout>
+
+    </RelativeLayout>
