@@ -68,4 +68,10 @@
     <string name="adjust_text">Adjust Text</string>
     <string name="change_language">Change Language</string>
     <string name="send_us_message">Send Us Message</string>
+    <string name="home1">Home</string>
+    <string name="account">Account</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="pay">Pay</string>
+    <string name="login_using_google">Login using Google</string>
 </resources>

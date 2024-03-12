@@ -1,16 +1,62 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/login"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".depositFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"
-        android:text="@string/deposit_fragment" />
+        android:layout_marginTop="40dp"
+        android:textColor="@color/white"
+        android:gravity="center_horizontal"
+        android:text="Choose a Payment Method"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:padding="16dp" />
+
+    <LinearLayout
+        android:id="@+id/paymentButtonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/titleTextView">
+
+        <ImageButton
+            android:id="@+id/creditCardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pesa"
+            android:background="@color/login"
+            android:padding="15dp"
+            android:contentDescription="Mpesa"
+            android:onClick="onCreditCardClicked" />
+
+        <ImageButton
+            android:id="@+id/debitCardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:background="@color/login"
+            android:padding="20dp"
+            android:src="@drawable/ic_debit"
+            android:contentDescription="Bank Deposit"
+            android:onClick="onDebitCardClicked" />
+        <ImageButton
+            android:id="@+id/airtelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:background="@color/login"
+            android:padding="20dp"
+            android:src="@drawable/wallet"
+            android:contentDescription="Airtel Money"
+            android:onClick="onAirtelClicked" />
+
+    </LinearLayout>
 
 </RelativeLayout>

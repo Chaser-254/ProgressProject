@@ -17,6 +17,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -55,16 +60,17 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void Register() {
-        String user = email.getText().toString().trim();
-        String pass = password.getText().toString().trim();
+        String userEmail = email.getText().toString().trim();
+        String userPass = password.getText().toString().trim();
+        String userPhone = phone.getText().toString().trim();
 
-        if (user.isEmpty()){
-            email.setError("Email is required");
+        if (userEmail.isEmpty()){
+            email.setError("Email cannot be empty");
         }
-        if (pass.isEmpty()){
+        if (userPass.isEmpty()){
             password.setError("Password cannot be empty");
         } else {
-            mAuth.createUserWithEmailAndPassword(user,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            mAuth.createUserWithEmailAndPassword(userEmail,userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
@@ -79,6 +85,9 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                             }
                         });
+
+                        saveToPostgreSQL(userEmail,userPass,userPhone);
+
                         startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
                     }else {
                         Toast.makeText(RegisterActivity.this, "Registration is not successful" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
@@ -86,5 +95,38 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void saveToPostgreSQL(String userEmail, String userPass, String userPhone) {
+        String jdbcUrl = "jdbc:postgresql://localhost:5432/lightPAY";
+        String username = "postgres";
+        String password = "Manu@254#";
+        
+        try{
+            Class.forName("org.postgresql.Driver");
+            Connection connection = DriverManager.getConnection(jdbcUrl,username,password);
+            
+            String sql = "INSERT INTO users(email,password,phone) VALUES(?,?,?)";
+            
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1,userEmail);
+            statement.setString(2,userPass);
+            statement.setString(3,userPhone);
+            
+            int rowsInserted = statement.executeUpdate();
+            if(rowsInserted > 0){
+                Toast.makeText(RegisterActivity.this, "Registration saved to database.", Toast.LENGTH_SHORT).show();
+            }
+            
+            statement.close();
+            connection.close();
+        } catch (ClassNotFoundException e){
+            Toast.makeText(RegisterActivity.this, "PostgreSQL JDBC driver not found.", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        } catch (SQLException e){
+            Toast.makeText(RegisterActivity.this, "Database access error", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
     }
 }

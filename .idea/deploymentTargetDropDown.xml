@@ -10,23 +10,12 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\JAVA DEVELOPER\.android\avd\Pixel_3a_API_28.avd" />
+                  <value value="C:\Users\JAVA DEVELOPER\.android\avd\Pixel_3a_API_28_1.avd" />
                 </Key>
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-28T09:29:31.756274900Z" />
-          <targetsSelectedWithDialog>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\JAVA DEVELOPER\.android\avd\Pixel_3a_API_28.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetsSelectedWithDialog>
+          <timeTargetWasSelectedWithDropDown value="2024-03-08T09:37:46.123956700Z" />
         </State>
       </entry>
     </value>

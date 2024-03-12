@@ -6,25 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".RegisterActivity"
     android:orientation="vertical"
-    android:background="@color/primary">
+    android:background="@color/login">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        app:strokeColor="@color/black"
-        android:backgroundTint="@color/primary"
-        app:cardCornerRadius="50dp">
+        app:cardCornerRadius="80dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/login">
 
         <ImageView
             android:id="@+id/logoImageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:scaleType="centerCrop"
-            android:background="@color/black"
-            android:src="@drawable/user_login_register"
-            android:contentDescription="LightPAY" />
+            android:layout_gravity="center|center_horizontal"
+            android:background="@drawable/background_rounded"
+            android:src="@drawable/person2"
+            android:contentDescription="@string/lightpay" />
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -33,10 +33,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/register_to_lightpay"
-        android:textSize="20sp"
-        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textColor="@color/white"
         android:gravity="center"
-        android:textStyle="normal"
+        android:textStyle="bold"
         android:layout_marginTop="0dp" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -54,6 +54,7 @@
             android:id="@+id/register_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edittext"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:inputType="textEmailAddress|textNoSuggestions" />
@@ -76,6 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
+            android:background="@drawable/rounded_edittext"
             android:textSize="16sp"
             android:inputType="textEmailAddress|textNoSuggestions" />
 
@@ -99,6 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
+            android:background="@drawable/rounded_edittext"
             android:textSize="16sp"
             android:inputType="textPassword" />
 
@@ -121,6 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
+            android:background="@drawable/rounded_edittext"
             android:textSize="16sp"
             android:inputType="textPhonetic" />
 
@@ -161,10 +165,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Already a User? Login Now"
-        android:textColor="@color/black"
+        android:textColor="@color/off_white"
         android:gravity="center"
-        android:textSize="15sp"
-        android:layout_marginTop="24dp" />
+        android:textSize="20sp"
+        android:layout_marginTop="30dp" />
     <ProgressBar
         android:id="@+id/regProgressBar"
         android:layout_width="wrap_content"

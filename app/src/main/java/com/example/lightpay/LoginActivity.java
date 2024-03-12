@@ -31,6 +31,10 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.concurrent.Executor;
 
 public class LoginActivity extends AppCompatActivity {
@@ -188,11 +192,37 @@ public class LoginActivity extends AppCompatActivity {
                             progressBar.setVisibility(View.VISIBLE);
                             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                             startMainActivity();
+                            saveToPostgreSQL(userEmail,userPass);
+
                         } else {
                             Toast.makeText(LoginActivity.this, "Login Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+    private void saveToPostgreSQL(String userEmail, String userPass) {
+        Connection connection  = null;
+        try {
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/lightPAY","postgres","Manu@254#");
+            String insertQuery = "INSERT INTO users (email,password) VALUES(?,?)";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+            preparedStatement.setString(1,userEmail);
+            preparedStatement.setString(2, userPass);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                if(connection != null){
+                    connection.close();
+                }
+            } catch(SQLException ex){
+                ex.printStackTrace();
+            }
+        }
     }
 
     private void startMainActivity() {
