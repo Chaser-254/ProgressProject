@@ -3,15 +3,20 @@ package com.example.lightpay;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import java.util.concurrent.Executor;
 
 
 public class depositFragment extends Fragment {
@@ -27,7 +32,7 @@ public class depositFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 selectedPaymentMethodButton = creditCardButton;
-                showAmountDialog();
+                showMpesaDialog();
             }
         });
 
@@ -36,7 +41,7 @@ public class depositFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 selectedPaymentMethodButton = debitCardButton;
-                showAmountDialog();
+                showDebitDialog();
             }
         });
 
@@ -45,7 +50,7 @@ public class depositFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 selectedPaymentMethodButton = AirtelMoney;
-                showAmountDialog();
+                showAirtelDialog();
             }
         });
 
@@ -53,31 +58,139 @@ public class depositFragment extends Fragment {
         return view;
     }
 
-    private void showAmountDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Enter Amount");
+    private void showAirtelDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Deposit using Airtel Money");
 
-        final EditText amountEditText = new EditText(getContext());
-        amountEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        builder.setView(amountEditText);
+        final EditText inputPhone = new EditText(getActivity());
+        inputPhone.setHint("Enter your Airtel Number");
+
+        final EditText inputAmount = new EditText(getActivity());
+        inputAmount.setHint("Enter Amount");
+
+        final EditText inputPin = new EditText(getActivity());
+        inputPin.setHint("PIN");
+
+        LinearLayout layout = new LinearLayout(getActivity());
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(inputPhone);
+        layout.addView(inputAmount);
+        layout.addView(inputPin);
+        builder.setView(layout);
+
+        builder.setPositiveButton("Authorize", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                authorizeBiometrics();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    private void showDebitDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Deposit with Debit card");
+
+        final EditText inputAccount = new EditText(getActivity());
+        inputAccount.setHint("Debit Card Number");
+
+        final EditText inputAmount = new EditText(getActivity());
+        inputAmount.setHint("Amount");
+
+        final EditText inputPIN = new EditText(getActivity());
+        inputPIN.setHint("PIN");
+        LinearLayout layout = new LinearLayout(getActivity());
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(inputAccount);
+        layout.addView(inputAmount);
+        layout.addView(inputPIN);
+        builder.setView(layout);
+
+        builder.setPositiveButton("Authorize", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                authorizeBiometrics();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    private void showMpesaDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Deposit with MPESA");
+
+        final EditText inputAccountNumber = new EditText(getActivity());
+        inputAccountNumber.setHint("Account Number");
+        final EditText inputPhone = new EditText(getActivity());
+        inputPhone.setHint("Enter MPESA mobile number");
+
+        final EditText inputAmount = new EditText(getActivity());
+        inputAmount.setHint("Amount");
+        final EditText inputPin = new EditText(getActivity());
+        inputPin.setHint("PIN");
+        LinearLayout layout = new LinearLayout(getActivity());
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(inputAccountNumber);
+        layout.addView(inputPhone);
+        layout.addView(inputPin);
+        builder.setView(layout);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String amount = amountEditText.getText().toString();
-                Toast.makeText(getContext(), "Amount entered: Ksh." + amount, Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+                authorizeBiometrics();
             }
         });
 
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                dialog.cancel();
             }
         });
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        builder.show();
+    }
+
+    private void authorizeBiometrics() {
+        Executor executor = ContextCompat.getMainExecutor(requireActivity());
+        BiometricPrompt biometricPrompt = new BiometricPrompt(depositFragment.this, executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(getActivity(), "Authentication error" + errString, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Toast.makeText(getActivity(), "Authentication successfully", Toast.LENGTH_SHORT).show();
+                //deposit with MPESA logic here
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getActivity(), "Authentication failed!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Confirm your fingerprints to complete the transaction")
+                .setSubtitle("Log in using your fingerprints credentials")
+                .setNegativeButtonText("Use your Phone/Account Password")
+                .build();
+        biometricPrompt.authenticate(promptInfo);
     }
 }

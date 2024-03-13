@@ -3,14 +3,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/dack"
     tools:context=".PaybillFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/paybillView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"
-        android:text="@string/payment_fragment" />
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:gravity="center_horizontal"
+        android:text="@string/select_payment_method_below"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:padding="16dp"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="60dp"
+        android:gravity="center_horizontal"
+        android:background="@drawable/dack"
+        android:layout_below="@id/paybillView">
+
+        <ImageButton
+            android:id="@+id/lipaNaMpesa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/login"
+            android:padding="20dp"
+            android:src="@drawable/pay"
+            android:contentDescription="@string/lipanampesa" />
+        <ImageButton
+            android:id="@+id/lipaNaPaybill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:background="@color/login"
+            android:padding="20dp"
+            android:src="@drawable/payments"
+            android:contentDescription="@string/pay_with_paybill" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="300dp"
+        android:padding="10dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/important_notice"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:background="@color/off_white"/>
+    </RelativeLayout>
 </RelativeLayout>

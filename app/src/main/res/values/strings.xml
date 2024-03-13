@@ -78,4 +78,12 @@
     <string name="lightpay_is_a_faster_means_of_payment_that_is_easier_to_use_for_transaction_that_involve_larger_sums_of_money_in_a_simple_and_faster_way_possible_saving_you_time_and_energy">lightPAY is a faster means of payment that is easier to use for transaction that involve larger sums of money in a simple and faster way possible saving you time and energy</string>
     <string name="transact_now">Transact now!</string>
     <string name="fast_services">Fast Services</string>
+    <string name="choose_a_payment_method">Choose a Payment Method</string>
+    <string name="disclaimer">DISCLAIMER!!</string>
+    <string name="airtel_money">Airtel Money</string>
+    <string name="bank_deposit">Bank Deposit</string>
+    <string name="select_payment_method_below">Select Payment Method below</string>
+    <string name="lipanampesa">LipaNaMpesa</string>
+    <string name="pay_with_paybill">Pay with PayBill</string>
+    <string name="important_notice">IMPORTANT NOTICE !!!!</string>
 </resources>

@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/login"
+    android:background="@drawable/dack"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".depositFragment">
 
@@ -9,10 +9,10 @@
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:textColor="@color/white"
         android:gravity="center_horizontal"
-        android:text="Choose a Payment Method"
+        android:text="@string/choose_a_payment_method"
         android:textSize="20sp"
         android:textStyle="bold"
         android:padding="16dp" />
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:gravity="center_horizontal"
         android:layout_below="@id/titleTextView">
 
@@ -33,8 +33,7 @@
             android:src="@drawable/pesa"
             android:background="@color/login"
             android:padding="15dp"
-            android:contentDescription="Mpesa"
-            android:onClick="onCreditCardClicked" />
+            android:contentDescription="mpesa"/>
 
         <ImageButton
             android:id="@+id/debitCardButton"
@@ -44,8 +43,7 @@
             android:background="@color/login"
             android:padding="20dp"
             android:src="@drawable/ic_debit"
-            android:contentDescription="Bank Deposit"
-            android:onClick="onDebitCardClicked" />
+            android:contentDescription="@string/bank_deposit"/>
         <ImageButton
             android:id="@+id/airtelButton"
             android:layout_width="wrap_content"
@@ -54,9 +52,24 @@
             android:background="@color/login"
             android:padding="20dp"
             android:src="@drawable/wallet"
-            android:contentDescription="Airtel Money"
-            android:onClick="onAirtelClicked" />
+            android:contentDescription="@string/airtel_money"/>
 
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="300dp"
+        android:padding="10dp"
+        android:gravity="center_horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/disclaimer"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:background="@color/off_white"/>
+
+    </RelativeLayout>
 </RelativeLayout>
