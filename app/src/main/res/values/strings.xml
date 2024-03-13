@@ -86,4 +86,11 @@
     <string name="lipanampesa">LipaNaMpesa</string>
     <string name="pay_with_paybill">Pay with PayBill</string>
     <string name="important_notice">IMPORTANT NOTICE !!!!</string>
+    <string name="capture_check">Capture Check</string>
+    <string name="deposit_check">Deposit Check</string>
+    <string name="choose_a_method_for_withdrawal">Choose a method for Withdrawal</string>
+    <string name="withdraw_with_mpesa">Withdraw with Mpesa</string>
+    <string name="withdrw_to_a_bank_account">Withdrw to a Bank Account</string>
+    <string name="withdraw_using_airtel_money">Withdraw using Airtel Money</string>
+    <string name="withdrawal_notice">WITHDRAWAL NOTICE</string>
 </resources>

@@ -3,6 +3,8 @@ package com.example.lightpay;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,15 +63,19 @@ public class depositFragment extends Fragment {
     private void showAirtelDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Deposit using Airtel Money");
+        builder.setIcon(R.drawable.airtel);
 
         final EditText inputPhone = new EditText(getActivity());
         inputPhone.setHint("Enter your Airtel Number");
+        inputPhone.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         final EditText inputAmount = new EditText(getActivity());
         inputAmount.setHint("Enter Amount");
+        inputAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         final EditText inputPin = new EditText(getActivity());
         inputPin.setHint("PIN");
+        inputPin.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
 
         LinearLayout layout = new LinearLayout(getActivity());
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -96,15 +102,20 @@ public class depositFragment extends Fragment {
     private void showDebitDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Deposit with Debit card");
+        builder.setIcon(R.drawable.ic_mastercard);
 
         final EditText inputAccount = new EditText(getActivity());
         inputAccount.setHint("Debit Card Number");
+        inputAccount.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         final EditText inputAmount = new EditText(getActivity());
         inputAmount.setHint("Amount");
+        inputAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         final EditText inputPIN = new EditText(getActivity());
         inputPIN.setHint("PIN");
+        inputPIN.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+
         LinearLayout layout = new LinearLayout(getActivity());
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.addView(inputAccount);
@@ -130,16 +141,24 @@ public class depositFragment extends Fragment {
     private void showMpesaDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Deposit with MPESA");
+        builder.setIcon(R.drawable.mpesa);
 
         final EditText inputAccountNumber = new EditText(getActivity());
         inputAccountNumber.setHint("Account Number");
+        inputAccountNumber.setInputType(InputType.TYPE_CLASS_NUMBER);
+
         final EditText inputPhone = new EditText(getActivity());
         inputPhone.setHint("Enter MPESA mobile number");
+        inputPhone.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         final EditText inputAmount = new EditText(getActivity());
         inputAmount.setHint("Amount");
+        inputAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
+
         final EditText inputPin = new EditText(getActivity());
         inputPin.setHint("PIN");
+        inputPin.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+
         LinearLayout layout = new LinearLayout(getActivity());
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.addView(inputAccountNumber);

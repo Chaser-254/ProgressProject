@@ -3,14 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/dack"
     tools:context=".AccountsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/camera_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:textColor="@color/off_white"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:text="@string/deposit_check"/>
+    <Button
+        android:id="@+id/button_capture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"
-        android:text="@string/accounts_fragment" />
+        android:layout_marginTop="250dp"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/capture_check"/>
 
 </RelativeLayout>

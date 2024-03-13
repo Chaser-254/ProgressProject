@@ -10,6 +10,8 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.renderscript.ScriptGroup;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,20 +56,28 @@ public class PaybillFragment extends Fragment {
     private void payBillMpesa() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Pay With PayBill");
+        builder.setIcon(R.drawable.download);
 
         final EditText inputBusinessNo = new EditText(getActivity());
         inputBusinessNo.setHint("Enter Business No.");
+        inputBusinessNo.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         final EditText inputAccNo = new EditText(getActivity());
         inputAccNo.setHint("Enter Account Number");
 
+        final EditText inputAmount = new EditText(getActivity());
+        inputAmount.setHint("Enter Amount");
+        inputAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
+
         final EditText inputPin = new EditText(getActivity());
         inputPin.setHint("PIN");
+        inputPin.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
 
         LinearLayout layout = new LinearLayout(getActivity());
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.addView(inputBusinessNo);
         layout.addView(inputAccNo);
+        layout.addView(inputAmount);
         layout.addView(inputPin);
         builder.setView(layout);
 
@@ -90,15 +100,19 @@ public class PaybillFragment extends Fragment {
     private void LipaNaMpesa() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("LIPA NA MPESA");
+        builder.setIcon(R.drawable.lipampesa);
 
         final EditText inputTillNo = new EditText(getActivity());
         inputTillNo.setHint("Enter Till No.");
+        inputTillNo.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         final EditText inputAmount = new EditText(getActivity());
         inputAmount.setHint("Enter Amount");
+        inputAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         final EditText inputPin = new EditText(getActivity());
         inputPin.setHint("PIN");
+        inputPin.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
 
         LinearLayout layout = new LinearLayout(getActivity());
         layout.setOrientation(LinearLayout.VERTICAL);

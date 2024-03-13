@@ -3,14 +3,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/dack"
+    android:orientation="vertical"
     tools:context=".WithdrawFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/withdrawText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"
-        android:text="@string/withdraw_fragment" />
+        android:layout_marginTop="50dp"
+        android:textColor="@color/off_white"
+        android:gravity="center_horizontal"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:padding="16dp"
+        android:text="@string/choose_a_method_for_withdrawal"/>
+
+    <LinearLayout
+        android:id="@+id/withdrawLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/withdrawText">
+
+        <ImageButton
+            android:id="@+id/withdrawMpesa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pesa"
+            android:background="@color/login"
+            android:padding="15dp"
+            android:contentDescription="@string/withdraw_with_mpesa"/>
+
+        <ImageButton
+            android:id="@+id/withdrawBank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_debit"
+            android:background="@color/login"
+            android:layout_marginStart="20dp"
+            android:padding="20dp"
+            android:contentDescription="TODO"/>
+        <ImageButton
+            android:id="@+id/withdrawAirtel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:src="@drawable/wallet"
+            android:layout_marginStart="20dp"
+            android:background="@color/login"
+            android:contentDescription="@string/withdraw_using_airtel_money"/>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="300dp"
+        android:padding="10dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/withdrawal_notice"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:background="@color/off_white"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>
