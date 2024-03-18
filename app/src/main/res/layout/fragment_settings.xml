@@ -4,14 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/teal_700"
+    android:background="@color/login"
     tools:context=".settingsFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content">`
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/back_set_arrow"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/back_arrow"
@@ -20,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Settings"
-            android:textColor="@color/black"
+            android:textColor="@color/off_white"
             android:layout_centerInParent="true"
             android:textStyle="bold"
             android:textSize="28sp"/>
@@ -35,8 +36,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:src="@drawable/ic_user"/>
@@ -46,17 +47,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="@string/emmanuel_esibitar"
-                android:textColor="@color/black"
+                android:text="@string/lightpay_user"
+                android:textColor="@color/off_white"
                 android:textSize="22sp"
                 android:textStyle="bold"/>
             
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+254758714775"
-                android:textColor="@color/black"
-                android:textSize="12sp"
+                android:text="@string/coming_soon"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_gravity="center"/>
             
@@ -103,6 +104,7 @@
                         android:layout_marginStart="20dp"/>
 
                     <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/night_mode_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -123,6 +125,7 @@
                         android:padding="12sp"/>
 
                     <TextView
+                        android:id="@+id/notification_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/notification_setting"
@@ -133,6 +136,7 @@
                         android:layout_marginStart="20dp"/>
 
                     <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/notification_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -153,6 +157,7 @@
                         android:padding="12sp"/>
 
                     <TextView
+                        android:id="@+id/private_account_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Private Account"
@@ -163,6 +168,7 @@
                         android:layout_marginStart="20dp"/>
 
                     <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/private_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -194,6 +200,7 @@
                     android:padding="12sp"/>
 
                 <TextView
+                    android:id="@+id/security_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Security &amp; Privacy"
@@ -223,6 +230,7 @@
                     android:padding="12sp"/>
 
                 <TextView
+                    android:id="@+id/textSize_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/adjust_text"
@@ -252,6 +260,7 @@
                     android:padding="12sp"/>
 
                 <TextView
+                    android:id="@+id/languageText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/change_language"
@@ -293,6 +302,7 @@
                     android:padding="12sp"/>
 
                 <TextView
+                    android:id="@+id/messageText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/send_us_message"
@@ -323,6 +333,7 @@
                     android:padding="12dp"/>
 
                 <TextView
+                    android:id="@+id/faq_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="About Us"
@@ -363,6 +374,7 @@
                     android:padding="12sp"/>
 
                 <TextView
+                    android:id="@+id/logout_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Logout"
@@ -373,6 +385,7 @@
                     android:layout_marginStart="20dp"/>
 
                 <ImageView
+                    android:id="@id/icon_logout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/logout"

@@ -1,9 +1,7 @@
 package com.example.lightpay;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,44 +16,39 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 
 
 public class depositFragment extends Fragment {
 
-    private ImageButton selectedPaymentMethodButton;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_deposit, container, false);
 
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
         ImageButton creditCardButton = view.findViewById(R.id.creditCardButton);
-        creditCardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedPaymentMethodButton = creditCardButton;
-                showMpesaDialog();
-            }
-        });
+        creditCardButton.setOnClickListener(v -> showMpesaDialog());
 
         ImageButton debitCardButton = view.findViewById(R.id.debitCardButton);
-        debitCardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedPaymentMethodButton = debitCardButton;
-                showDebitDialog();
-            }
-        });
+        debitCardButton.setOnClickListener(v -> showDebitDialog());
 
         ImageButton AirtelMoney = view.findViewById(R.id.airtelButton);
-        AirtelMoney.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedPaymentMethodButton = AirtelMoney;
-                showAirtelDialog();
-            }
-        });
-
+        AirtelMoney.setOnClickListener(v -> showAirtelDialog());
 
         return view;
     }
@@ -84,18 +77,8 @@ public class depositFragment extends Fragment {
         layout.addView(inputPin);
         builder.setView(layout);
 
-        builder.setPositiveButton("Authorize", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                authorizeBiometrics();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setPositiveButton("Authorize", (dialog, which) -> authorizeBiometrics(inputPhone.getText().toString().trim(), inputAmount.getText().toString().trim()));
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         builder.show();
     }
 
@@ -123,18 +106,8 @@ public class depositFragment extends Fragment {
         layout.addView(inputPIN);
         builder.setView(layout);
 
-        builder.setPositiveButton("Authorize", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                authorizeBiometrics();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setPositiveButton("Authorize", (dialog, which) -> authorizeBiometrics(inputAccount.getText().toString().trim(), inputAmount.getText().toString().trim()));
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         builder.show();
     }
 
@@ -162,41 +135,31 @@ public class depositFragment extends Fragment {
         LinearLayout layout = new LinearLayout(getActivity());
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.addView(inputAccountNumber);
+        layout.addView(inputAmount);
         layout.addView(inputPhone);
         layout.addView(inputPin);
         builder.setView(layout);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                authorizeBiometrics();
-            }
-        });
+        builder.setPositiveButton("OK", (dialog, which) -> authorizeBiometrics(inputAccountNumber.getText().toString().trim(), inputAmount.getText().toString().trim()));
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
         builder.show();
     }
 
-    private void authorizeBiometrics() {
+    private void authorizeBiometrics(final String accountNumber, final String amount) {
         Executor executor = ContextCompat.getMainExecutor(requireActivity());
         BiometricPrompt biometricPrompt = new BiometricPrompt(depositFragment.this, executor, new BiometricPrompt.AuthenticationCallback() {
             @Override
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
-                Toast.makeText(getActivity(), "Authentication error" + errString, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Authentication error: " + errString, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                Toast.makeText(getActivity(), "Authentication successfully", Toast.LENGTH_SHORT).show();
-                //deposit with MPESA logic here
+                depositToFirestore(accountNumber, amount);
             }
 
             @Override
@@ -212,4 +175,46 @@ public class depositFragment extends Fragment {
                 .build();
         biometricPrompt.authenticate(promptInfo);
     }
+
+    private void depositToFirestore(String accountNumber, String amount) {
+        String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+
+        DocumentReference userRef = db.collection("users").document(userId);
+
+        Map<String, Object> depositData = new HashMap<>();
+        depositData.put("accountNumber", accountNumber);
+        depositData.put("amount", Double.parseDouble(amount));
+        depositData.put("timestamp", FieldValue.serverTimestamp());
+
+        db.collection("deposits")
+                .add(depositData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        String depositId = documentReference.getId();
+
+                        userRef.update("deposits", FieldValue.arrayUnion(depositId))
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(getActivity(), "Deposit successful", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getActivity(), "Failed to update user document: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Failed to deposit: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
 }

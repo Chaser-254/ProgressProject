@@ -93,4 +93,8 @@
     <string name="withdrw_to_a_bank_account">Withdrw to a Bank Account</string>
     <string name="withdraw_using_airtel_money">Withdraw using Airtel Money</string>
     <string name="withdrawal_notice">WITHDRAWAL NOTICE</string>
+    <string name="search">search</string>
+    <string name="search_transaction">Search Transaction</string>
+    <string name="lightpay_user">lightPAY User</string>
+    <string name="coming_soon">coming soon</string>
 </resources>

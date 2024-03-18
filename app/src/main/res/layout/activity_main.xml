@@ -30,7 +30,7 @@
                 android:layout_marginTop="10dp"
                 android:src="@drawable/ic_user"
                 android:layout_marginRight="20dp"
-                android:id="@+id/search_btn"
+                android:id="@+id/profile_pic"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/langauge_background"/>
             <ImageButton
@@ -42,7 +42,7 @@
                 android:layout_marginEnd="10dp"
                 app:tint="@color/white"
                 android:layout_marginStart="210dp"
-                android:id="@+id/profile_pic"
+                android:id="@+id/search_btn"
                 android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless" />
 

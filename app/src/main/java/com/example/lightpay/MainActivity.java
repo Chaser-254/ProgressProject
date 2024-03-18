@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
+    ImageButton searchBtn;
+    ImageButton profileBtn;
     private FirebaseAuth mAuth;
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
@@ -37,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 
+        searchBtn = findViewById(R.id.search_btn);
+        profileBtn = findViewById(R.id.profile_pic);
+
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -51,6 +57,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_home1);
 
         }
+
+        searchBtn.setOnClickListener(v->{
+            Intent searchIntent = new Intent(MainActivity.this,searchActivity.class);
+            startActivity(searchIntent);
+        });
+
+        profileBtn.setOnClickListener(v->{
+            Intent profileIntent = new Intent(MainActivity.this,profileActivity.class);
+            startActivity(profileIntent);
+        });
+
     }
 
     @Override
