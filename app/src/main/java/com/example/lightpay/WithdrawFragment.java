@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -19,11 +20,26 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Transaction;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 
 
 public class WithdrawFragment extends Fragment {
 
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
     private ImageButton selectedPaymentMethod;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -201,9 +217,6 @@ public class WithdrawFragment extends Fragment {
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
                 Toast.makeText(getActivity(), "Authentication successfully", Toast.LENGTH_SHORT).show();
-                //Withdrawal with MPESA logic here
-                //withdrawal  with bank logic here
-                //withdrawal with Airtel money here
             }
 
             @Override
@@ -218,5 +231,59 @@ public class WithdrawFragment extends Fragment {
                 .setNegativeButtonText("Use your Phone/Account Password")
                 .build();
         biometricPrompt.authenticate(promptInfo);
+    }
+//API o handle withdrawal and update the balances in the user account
+    private void withdrawAmount(final String paymentMethod, final String accountNumber, final String amount) {
+        final String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        final DocumentReference userRef = db.collection("users").document(userId);
+
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                DocumentSnapshot userSnapshot = transaction.get(userRef);
+                double currentBalance = userSnapshot.getDouble("balance");
+
+                double withdrawalAmount = Double.parseDouble(amount);
+                if (currentBalance >= withdrawalAmount) {
+                    double newBalance = currentBalance - withdrawalAmount;
+                    transaction.update(userRef, "balance", newBalance);
+
+                    Map<String, Object> withdrawalData = new HashMap<>();
+                    withdrawalData.put("paymentMethod", paymentMethod);
+                    withdrawalData.put("accountNumber", accountNumber);
+                    withdrawalData.put("amount", withdrawalAmount);
+                    withdrawalData.put("timestamp", FieldValue.serverTimestamp());
+
+                    db.collection("withdrawals")
+                            .document()
+                            .set(withdrawalData)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(getActivity(), "Withdrawal successful", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getActivity(), "Failed to save withdrawal data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } else {
+                    Toast.makeText(getActivity(), "Insufficient balance", Toast.LENGTH_SHORT).show();
+                }
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getActivity(), "Withdrawal successfully, thank you for doing business with you.", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getActivity(), "Transaction failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

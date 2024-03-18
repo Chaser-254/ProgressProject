@@ -97,4 +97,8 @@
     <string name="search_transaction">Search Transaction</string>
     <string name="lightpay_user">lightPAY User</string>
     <string name="coming_soon">coming soon</string>
+    <string name="send_cash">Send Cash</string>
+    <string name="send_money">Send Money</string>
+    <string name="choose_a_send_money_method_to_continue">Choose a send money method to continue</string>
+    <string name="send_money_notice">SEND MONEY NOTICE!!</string>
 </resources>
