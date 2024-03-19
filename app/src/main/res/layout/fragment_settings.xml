@@ -15,7 +15,9 @@
             android:id="@+id/back_set_arrow"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/back_arrow"
+            android:layout_marginTop="40dp"
+            android:background="@color/login"
+            android:src="@drawable/white_arrow"
             android:padding="14dp"/>
         <TextView
             android:layout_width="wrap_content"
@@ -36,26 +38,29 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="50dp"
                 android:layout_margin="10dp"
+                android:background="@drawable/langauge_background"
                 android:src="@drawable/ic_user"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:text="@string/lightpay_user"
+                android:layout_marginTop="5dp"
+                android:text="@string/user_email_id"
                 android:textColor="@color/off_white"
                 android:textSize="22sp"
                 android:textStyle="bold"/>
             
             <TextView
+                android:id="@+id/userView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/coming_soon"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"

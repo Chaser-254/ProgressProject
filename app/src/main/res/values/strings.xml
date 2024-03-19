@@ -101,4 +101,5 @@
     <string name="send_money">Send Money</string>
     <string name="choose_a_send_money_method_to_continue">Choose a send money method to continue</string>
     <string name="send_money_notice">SEND MONEY NOTICE!!</string>
+    <string name="user_email_id">User Email ID:</string>
 </resources>

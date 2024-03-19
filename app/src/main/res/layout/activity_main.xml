@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true"
+    android:statusBarColor="#379af5"
+    android:animateFirstView="false"
+    android:clipToPadding="false"
+    android:paddingBottom="10dp"
+    android:focusableInTouchMode="true"
     android:background="@color/white"
     tools:openDrawer="start"
     tools:context=".MainActivity">

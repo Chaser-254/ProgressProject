@@ -6,14 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 
 public class settingsFragment extends Fragment {
     private SwitchCompat privateAccountSwitch;
+    TextView userData;
+    private FirebaseAuth mAuth;
+
 
     private final boolean isNightMode = false;
     @Nullable
@@ -21,7 +28,8 @@ public class settingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-
+        mAuth = FirebaseAuth.getInstance();
+        userData = view.findViewById(R.id.userView);
         ImageButton backArrowBtn = view.findViewById(R.id.back_set_arrow);
         ImageView nightModeImageView = view.findViewById(R.id.night_mode);
         ImageView notificationImageView = view.findViewById(R.id.setting_notification);
@@ -36,6 +44,11 @@ public class settingsFragment extends Fragment {
         SwitchCompat nightModeSwitch = view.findViewById(R.id.night_mode_switch);
         SwitchCompat notificationSwitch = view.findViewById(R.id.notification_switch);
         SwitchCompat privateAccountSwitch = view.findViewById(R.id.private_switch);
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null){
+            userData.setText(currentUser.getEmail());
+        }
 
         backArrowBtn.setOnClickListener(v -> {
             //implement method here
