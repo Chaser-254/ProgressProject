@@ -102,4 +102,14 @@
     <string name="choose_a_send_money_method_to_continue">Choose a send money method to continue</string>
     <string name="send_money_notice">SEND MONEY NOTICE!!</string>
     <string name="user_email_id">User Email ID:</string>
+    <string name="deposit_cash">Deposit Cash</string>
+    <string name="username">Username</string>
+    <string name="pay_bill">Pay Bill</string>
+    <string name="withdraw_cash">Withdraw Cash</string>
+    <string name="email">Email</string>
+    <string name="title">Title</string>
+    <string name="body">Body</string>
+    <string name="send">Send</string>
+    <string name="message_here">Message here</string>
+    <string name="message_body">Message Body:</string>
 </resources>

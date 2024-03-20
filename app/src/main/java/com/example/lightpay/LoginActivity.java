@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         BiometricManager biometricManager = BiometricManager.from(this);
-        switch (biometricManager.canAuthenticate()){
+        switch (biometricManager.canAuthenticate()) {
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
                 Toast.makeText(this, "Device does not support fingerprint", Toast.LENGTH_SHORT).show();
                 break;
@@ -82,6 +82,14 @@ public class LoginActivity extends AppCompatActivity {
                 break;
             case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
                 Toast.makeText(this, "No fingerprint assigned", Toast.LENGTH_LONG).show();
+            case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
+                break;
+            case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
+                break;
+            case BiometricManager.BIOMETRIC_SUCCESS:
+                break;
         }
         Executor executor = ContextCompat.getMainExecutor(this);
 
@@ -95,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthenticationSucceeded(@NonNull AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
                 Toast.makeText(getApplicationContext(), "Login successfully", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
             }
 
             @Override
@@ -192,37 +201,11 @@ public class LoginActivity extends AppCompatActivity {
                             progressBar.setVisibility(View.VISIBLE);
                             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                             startMainActivity();
-                            saveToPostgreSQL(userEmail,userPass);
-
                         } else {
                             Toast.makeText(LoginActivity.this, "Login Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-    }
-
-    private void saveToPostgreSQL(String userEmail, String userPass) {
-        Connection connection  = null;
-        try {
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/lightPAY","postgres","Manu@254#");
-            String insertQuery = "INSERT INTO users (email,password) VALUES(?,?)";
-
-            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-            preparedStatement.setString(1,userEmail);
-            preparedStatement.setString(2, userPass);
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e){
-            e.printStackTrace();
-        } finally {
-            try {
-                if(connection != null){
-                    connection.close();
-                }
-            } catch(SQLException ex){
-                ex.printStackTrace();
-            }
-        }
     }
 
     private void startMainActivity() {

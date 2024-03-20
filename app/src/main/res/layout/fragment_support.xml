@@ -1,16 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/dack"
     tools:context=".SupportFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"
-        android:text="@string/support_fragment" />
+        android:layout_marginStart="20dp"
+        android:text="Email Address:"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="100dp"
+        tools:ignore="HardcodedText" />
 
-</RelativeLayout>
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:textSize="24sp"
+        android:inputType="textEmailAddress"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_edittext"
+        android:hint="@string/email" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Title:"
+        android:layout_marginStart="20dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_marginTop="20dp"
+        tools:ignore="HardcodedText" />
+    <EditText
+        android:id="@+id/titleEditText"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="24sp"
+        android:inputType="text"
+        android:layout_gravity="center_horizontal"
+        android:padding="15dp"
+        android:background="@drawable/rounded_edittext"
+        android:hint="@string/title" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/message_body"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:textSize="24sp"
+        android:layout_marginTop="20dp"/>
+    <EditText
+        android:id="@+id/bodyEditText"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:padding="50dp"
+        android:inputType="text"
+        android:textSize="24sp"
+        android:background="@drawable/rounded_edittext"
+        android:hint="@string/message_here" />
+
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:text="@string/send"
+        android:textColor="@color/white"
+        android:textStyle="normal"
+        android:layout_gravity="center_horizontal"
+        android:textSize="24sp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/dark_blue"/>
+
+</LinearLayout>

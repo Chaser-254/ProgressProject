@@ -41,6 +41,7 @@ public class WithdrawFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private ImageButton selectedPaymentMethod;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -232,58 +233,49 @@ public class WithdrawFragment extends Fragment {
                 .build();
         biometricPrompt.authenticate(promptInfo);
     }
-//API o handle withdrawal and update the balances in the user account
-    private void withdrawAmount(final String paymentMethod, final String accountNumber, final String amount) {
-        final String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-        final DocumentReference userRef = db.collection("users").document(userId);
 
-        db.runTransaction(new Transaction.Function<Void>() {
-            @Override
-            public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
-                DocumentSnapshot userSnapshot = transaction.get(userRef);
-                double currentBalance = userSnapshot.getDouble("balance");
+    //API o handle withdrawal and update the balances in the user account
+    private void withdrawToFirestore(String paymentMethod, String accountNumber, String amount) {
 
-                double withdrawalAmount = Double.parseDouble(amount);
-                if (currentBalance >= withdrawalAmount) {
-                    double newBalance = currentBalance - withdrawalAmount;
-                    transaction.update(userRef, "balance", newBalance);
+        String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
-                    Map<String, Object> withdrawalData = new HashMap<>();
-                    withdrawalData.put("paymentMethod", paymentMethod);
-                    withdrawalData.put("accountNumber", accountNumber);
-                    withdrawalData.put("amount", withdrawalAmount);
-                    withdrawalData.put("timestamp", FieldValue.serverTimestamp());
+        DocumentReference userRef = db.collection("users").document(userId);
 
-                    db.collection("withdrawals")
-                            .document()
-                            .set(withdrawalData)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(getActivity(), "Withdrawal successful", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getActivity(), "Failed to save withdrawal data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                } else {
-                    Toast.makeText(getActivity(), "Insufficient balance", Toast.LENGTH_SHORT).show();
-                }
-                return null;
-            }
-        }).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getActivity(), "Withdrawal successfully, thank you for doing business with you.", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), "Transaction failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+
+        Map<String, Object> withdrawalData = new HashMap<>();
+        withdrawalData.put("paymentMethod", paymentMethod);
+        withdrawalData.put("accountNumber", accountNumber);
+        withdrawalData.put("amount", Double.parseDouble(amount));
+        withdrawalData.put("timestamp", FieldValue.serverTimestamp());
+
+        db.collection("withdrawals")
+                .add(withdrawalData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+
+                        String withdrawalId = documentReference.getId();
+
+                        userRef.update("withdrawals", FieldValue.arrayUnion(withdrawalId))
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(getActivity(), "Deposit successful", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getActivity(), "Failed to update user document: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Failed to deposit: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

@@ -8,10 +8,22 @@
     tools:context=".WithdrawFragment">
 
     <TextView
+        android:id="@+id/depositTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:gravity="center_horizontal"
+        android:text="@string/withdraw_cash"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:padding="16dp" />
+
+    <TextView
         android:id="@+id/withdrawText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="80dp"
         android:textColor="@color/off_white"
         android:gravity="center_horizontal"
         android:textSize="24sp"

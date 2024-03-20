@@ -20,6 +20,15 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
@@ -27,11 +36,16 @@ import java.util.concurrent.Executor;
 public class PaybillFragment extends Fragment {
 
     ImageButton lipaMpesa, billMpesa;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_paybill, container, false);
+
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         lipaMpesa = view.findViewById(R.id.lipaNaMpesa);
         billMpesa = view.findViewById(R.id.lipaNaPaybill);
@@ -149,7 +163,6 @@ public class PaybillFragment extends Fragment {
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
                 Toast.makeText(getActivity(), "Authentication successfully", Toast.LENGTH_SHORT).show();
-                // logic to implement successful transfer.
             }
 
             @Override
@@ -166,5 +179,45 @@ public class PaybillFragment extends Fragment {
                 .build();
         biometricPrompt.authenticate(promptInfo);
 
+    }
+
+    private void paybillToFirestore(String paymentMethod,String accountNumber,String amount){
+
+        String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        DocumentReference userRef = db.collection("users").document(userId);
+
+        Map<String, Object> paybillData = new HashMap<>();
+        paybillData.put("paymentMethod", paymentMethod);
+        paybillData.put("accountNumber",accountNumber);
+        paybillData.put("amount",Double.parseDouble(amount));
+        paybillData.put("timestamp", FieldValue.serverTimestamp());
+
+        db.collection("payBills")
+                .add(paybillData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        String paybillId = documentReference.getId();
+                        userRef.update("payBills",FieldValue.arrayUnion(paybillId))
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(getActivity(), "Paybill payment successfully", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getActivity(), "Paybill transaction not successful", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
 }

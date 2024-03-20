@@ -7,10 +7,22 @@
     tools:context=".PaybillFragment">
 
     <TextView
+        android:id="@+id/depositTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:gravity="center_horizontal"
+        android:text="@string/pay_bill"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:padding="16dp" />
+
+    <TextView
         android:id="@+id/paybillView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="80dp"
         android:textColor="@color/white"
         android:gravity="center_horizontal"
         android:text="@string/select_payment_method_below"
