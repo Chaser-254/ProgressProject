@@ -17,6 +17,7 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.lightpay.API.depositAPI;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,8 +25,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
@@ -34,6 +33,8 @@ public class depositFragment extends Fragment {
     private FirebaseAuth mAuth;
     ImageButton selectedPaymentMethodButton;
     private FirebaseFirestore db;
+    private com.example.lightpay.API.depositAPI depositAPI;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +42,8 @@ public class depositFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        depositAPI = new depositAPI();
+
 
         ImageButton creditCardButton = view.findViewById(R.id.creditCardButton);
         creditCardButton.setOnClickListener(new View.OnClickListener() {
@@ -208,7 +211,7 @@ public class depositFragment extends Fragment {
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                depositToFirestore(paymentMethod, accountNumber, amount);
+                depositAPI.deposit(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(), paymentMethod, accountNumber, Double.parseDouble(amount));
             }
 
             @Override
@@ -223,50 +226,5 @@ public class depositFragment extends Fragment {
                 .setNegativeButtonText("Use your Phone/Account Password")
                 .build();
         biometricPrompt.authenticate(promptInfo);
-    }
-
-    //API to handle deposits for various payment methods and save them to a table called deposits on my database
-    private void depositToFirestore(String paymentMethod, String accountNumber, String amount) {
-
-        String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-
-        DocumentReference userRef = db.collection("users").document(userId);
-
-
-        Map<String, Object> depositData = new HashMap<>();
-        depositData.put("paymentMethod", paymentMethod);
-        depositData.put("accountNumber", accountNumber);
-        depositData.put("amount", Double.parseDouble(amount));
-        depositData.put("timestamp", FieldValue.serverTimestamp());
-
-        db.collection("deposits")
-                .add(depositData)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-
-                        String depositId = documentReference.getId();
-
-                        userRef.update("deposits", FieldValue.arrayUnion(depositId))
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Toast.makeText(getActivity(), "Deposit successful", Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getActivity(), "Failed to update user document: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Failed to deposit: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 }

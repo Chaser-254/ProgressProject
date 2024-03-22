@@ -17,6 +17,7 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.lightpay.API.transactAPI;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +33,7 @@ public class TransactFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private ImageButton selectedSendMoneyOptions;
+    private com.example.lightpay.API.transactAPI transactAPI;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +41,7 @@ public class TransactFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_transact, container, false);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        transactAPI = new transactAPI();
 
         ImageButton sendWithMpesa = view.findViewById(R.id.SendMpesaCardButton);
         ImageButton sendWithBank = view.findViewById(R.id.sendDebitCardButton);
@@ -207,7 +210,7 @@ public class TransactFragment extends Fragment {
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                saveDataToFirestore(account, receiver, amount, paymentMethod);
+                transactAPI.makeTransaction(account, receiver, amount, paymentMethod);
             }
 
             @Override
@@ -222,30 +225,5 @@ public class TransactFragment extends Fragment {
                 .setNegativeButtonText("Use your Phone/Account Password")
                 .build();
         biometricPrompt.authenticate(promptInfo);
-    }
-
-    private void saveDataToFirestore(String account, String receiver, String amount, String paymentMethod) {
-        String userId = mAuth.getCurrentUser().getUid();
-        DocumentReference userRef = db.collection("users").document(userId);
-        Map<String, Object> transactionData = new HashMap<>();
-        transactionData.put("account", account);
-        transactionData.put("paymentMethod", paymentMethod);
-        transactionData.put("receiver", receiver);
-        transactionData.put("amount", amount);
-        transactionData.put("timestamp", FieldValue.serverTimestamp());
-        db.collection("transactions")
-                .add(transactionData)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(getActivity(), "Transaction successful", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Transaction failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 }

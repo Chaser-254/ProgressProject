@@ -3,14 +3,6 @@ package com.example.lightpay;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.biometric.BiometricPrompt;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
-import android.renderscript.ScriptGroup;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,18 +12,15 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Transaction;
+import androidx.annotation.NonNull;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.example.lightpay.API.withdrawalAPI;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
@@ -39,12 +28,18 @@ import java.util.concurrent.Executor;
 public class WithdrawFragment extends Fragment {
 
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
     private ImageButton selectedPaymentMethod;
+    private com.example.lightpay.API.withdrawalAPI withdrawalAPI;
+    private String paymentMethod;
+    private String accountNumber;
+    private String amount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mAuth = FirebaseAuth.getInstance();
+        withdrawalAPI = new withdrawalAPI();
+
         View view = inflater.inflate(R.layout.fragment_withdraw, container, false);
         ImageButton withdrawMpesa = view.findViewById(R.id.withdrawMpesa);
         ImageButton withdrawBank = view.findViewById(R.id.withdrawBank);
@@ -53,18 +48,21 @@ public class WithdrawFragment extends Fragment {
         withdrawMpesa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedPaymentMethod = withdrawMpesa;
                 showMpesaWithdrawalDialog();
             }
         });
         withdrawBank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedPaymentMethod = withdrawBank;
                 showBankWithdrawalDialog();
             }
         });
         withdrawAirtel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedPaymentMethod = withdrawAirtel;
                 showAirtelWithdrawalDialog();
             }
         });
@@ -104,7 +102,7 @@ public class WithdrawFragment extends Fragment {
         builder.setPositiveButton("Authorize", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                authorizeBiometrics();
+                authorizeBiometrics(paymentMethod,accountNumber,amount);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -149,7 +147,7 @@ public class WithdrawFragment extends Fragment {
         builder.setPositiveButton("Authorize", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                authorizeBiometrics();
+                authorizeBiometrics(paymentMethod,accountNumber,amount);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -193,7 +191,7 @@ public class WithdrawFragment extends Fragment {
         builder.setPositiveButton("Authorize", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                authorizeBiometrics();
+                authorizeBiometrics(paymentMethod,accountNumber,amount);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -205,7 +203,10 @@ public class WithdrawFragment extends Fragment {
         builder.show();
     }
 
-    private void authorizeBiometrics() {
+    private void authorizeBiometrics(String paymentMethod,String accountNumber,String amount) {
+        this.paymentMethod = paymentMethod;
+        this.accountNumber = accountNumber;
+        this.amount = amount;
         Executor executor = ContextCompat.getMainExecutor(requireActivity());
         BiometricPrompt biometricPrompt = new BiometricPrompt(WithdrawFragment.this, executor, new BiometricPrompt.AuthenticationCallback() {
             @Override
@@ -217,6 +218,7 @@ public class WithdrawFragment extends Fragment {
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
+                withdrawalAPI.withdraw(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(), paymentMethod, accountNumber, Double.parseDouble(amount));
                 Toast.makeText(getActivity(), "Authentication successfully", Toast.LENGTH_SHORT).show();
             }
 
@@ -232,50 +234,5 @@ public class WithdrawFragment extends Fragment {
                 .setNegativeButtonText("Use your Phone/Account Password")
                 .build();
         biometricPrompt.authenticate(promptInfo);
-    }
-
-    //API o handle withdrawal and update the balances in the user account
-    private void withdrawToFirestore(String paymentMethod, String accountNumber, String amount) {
-
-        String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-
-        DocumentReference userRef = db.collection("users").document(userId);
-
-
-        Map<String, Object> withdrawalData = new HashMap<>();
-        withdrawalData.put("paymentMethod", paymentMethod);
-        withdrawalData.put("accountNumber", accountNumber);
-        withdrawalData.put("amount", Double.parseDouble(amount));
-        withdrawalData.put("timestamp", FieldValue.serverTimestamp());
-
-        db.collection("withdrawals")
-                .add(withdrawalData)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-
-                        String withdrawalId = documentReference.getId();
-
-                        userRef.update("withdrawals", FieldValue.arrayUnion(withdrawalId))
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Toast.makeText(getActivity(), "Deposit successful", Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getActivity(), "Failed to update user document: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Failed to deposit: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 }

@@ -5,12 +5,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.renderscript.ScriptGroup;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,32 +18,25 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.lightpay.API.paybillAPI;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executor;
-
 
 public class PaybillFragment extends Fragment {
 
     ImageButton lipaMpesa, billMpesa;
+    private paybillAPI paybillAPI;
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_paybill, container, false);
 
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        paybillAPI = new paybillAPI();
 
         lipaMpesa = view.findViewById(R.id.lipaNaMpesa);
         billMpesa = view.findViewById(R.id.lipaNaPaybill);
@@ -62,7 +53,6 @@ public class PaybillFragment extends Fragment {
                 payBillMpesa();
             }
         });
-
 
         return view;
     }
@@ -98,7 +88,7 @@ public class PaybillFragment extends Fragment {
         builder.setPositiveButton("Authorize", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                authorizeBiometrics();
+                authorizeBiometrics(inputBusinessNo.getText().toString().trim(), inputAmount.getText().toString().trim());
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -108,7 +98,6 @@ public class PaybillFragment extends Fragment {
             }
         });
         builder.show();
-
     }
 
     private void LipaNaMpesa() {
@@ -138,7 +127,7 @@ public class PaybillFragment extends Fragment {
         builder.setPositiveButton("Authorize", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                authorizeBiometrics();
+                authorizeBiometrics(inputTillNo.getText().toString().trim(), inputAmount.getText().toString().trim());
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -150,7 +139,7 @@ public class PaybillFragment extends Fragment {
         builder.show();
     }
 
-    private void authorizeBiometrics() {
+    private void authorizeBiometrics(final String accountNumber, final String amount) {
         Executor executor = ContextCompat.getMainExecutor(requireActivity());
         BiometricPrompt biometricPrompt = new BiometricPrompt(PaybillFragment.this, executor, new BiometricPrompt.AuthenticationCallback() {
             @Override
@@ -162,7 +151,10 @@ public class PaybillFragment extends Fragment {
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                Toast.makeText(getActivity(), "Authentication successfully", Toast.LENGTH_SHORT).show();
+                String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+                String paymentMethod = "PayBill";
+
+                paybillAPI.payBill(userId, paymentMethod, accountNumber, amount);
             }
 
             @Override
@@ -178,46 +170,5 @@ public class PaybillFragment extends Fragment {
                 .setNegativeButtonText("Use Account Password")
                 .build();
         biometricPrompt.authenticate(promptInfo);
-
-    }
-
-    private void paybillToFirestore(String paymentMethod,String accountNumber,String amount){
-
-        String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-        DocumentReference userRef = db.collection("users").document(userId);
-
-        Map<String, Object> paybillData = new HashMap<>();
-        paybillData.put("paymentMethod", paymentMethod);
-        paybillData.put("accountNumber",accountNumber);
-        paybillData.put("amount",Double.parseDouble(amount));
-        paybillData.put("timestamp", FieldValue.serverTimestamp());
-
-        db.collection("payBills")
-                .add(paybillData)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        String paybillId = documentReference.getId();
-                        userRef.update("payBills",FieldValue.arrayUnion(paybillId))
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Toast.makeText(getActivity(), "Paybill payment successfully", Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getActivity(), "Paybill transaction not successful", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
     }
 }
