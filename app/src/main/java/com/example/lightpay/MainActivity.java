@@ -78,18 +78,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new depositFragment()).commit();
         } else if (item.getItemId() == R.id.nav_pay) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PaybillFragment()).commit();
-        } else if (item.getItemId() == R.id.nav_withdraw) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new WithdrawFragment()).commit();
         } else if (item.getItemId() == R.id.nav_transfer1) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TransactFragment()).commit();
-        } else if (item.getItemId() == R.id.nav_wallet) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AccountsFragment()).commit();
         } else if (item.getItemId() == R.id.nav_settings) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new settingsFragment()).commit();
-        } else if (item.getItemId() == R.id.nav_aboutInfo) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
-        } else if (item.getItemId() == R.id.nav_share) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new shareFragment()).commit();
         } else if (item.getItemId() == R.id.nav_logout) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new LogoutFragment()).commit();
         } else if (item.getItemId() == R.id.nav_support) {

@@ -112,4 +112,9 @@
     <string name="send">Send</string>
     <string name="message_here">Message here</string>
     <string name="message_body">Message Body:</string>
+    <string name="android_version_1_0_0">Android Version：1.0.0</string>
+    <string name="about_us">About US</string>
+    <string name="lightpay_is_a_faster_means_of_payment_that_offers_a_top_notch_security_measures_offering_a_secure_channel_for_transactions_worldwide">LightPAY is a faster means of payment that offers a top-notch security measures,offering a secure channel for transactions worldwide</string>
+    <string name="upload_profile">Upload Profile</string>
+    <string name="light_mode_settings">Light Mode Settings</string>
 </resources>

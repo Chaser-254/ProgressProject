@@ -45,9 +45,6 @@ public class LoginActivity extends AppCompatActivity {
     TextView textRegister;
     TextView textresetPassword;
     ProgressBar progressBar;
-    GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
-    MaterialButton googleBtn;
 
     BiometricPrompt biometricPrompt;
     PromptInfo promptInfo;
@@ -58,10 +55,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(this, gso);
-        googleBtn = findViewById(R.id.google_btn);
 
         mAuth = FirebaseAuth.getInstance();
         email = findViewById(R.id.login_email);
@@ -83,11 +76,8 @@ public class LoginActivity extends AppCompatActivity {
             case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
                 Toast.makeText(this, "No fingerprint assigned", Toast.LENGTH_LONG).show();
             case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
-                break;
             case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
-                break;
             case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
-                break;
             case BiometricManager.BIOMETRIC_SUCCESS:
                 break;
         }
@@ -119,17 +109,6 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
         biometricPrompt.authenticate(promptInfo);
 
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        if (acct != null){
-            navigateToSecondActivity();
-        }
-        googleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
-
 
         if (mAuth.getCurrentUser() != null) {
             startMainActivity();
@@ -154,25 +133,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         return;
-    }
-
-    private void signIn() {
-        Intent signIntent = gsc.getSignInIntent();
-        startActivityForResult(signIntent,1000);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode,Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1000){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                task.getResult(ApiException.class);
-                navigateToSecondActivity();
-            } catch (ApiException e) {
-                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_LONG).show();
-            }
-        }
     }
 
     private void navigateToSecondActivity() {

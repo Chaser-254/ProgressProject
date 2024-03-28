@@ -46,7 +46,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
             android:letterSpacing="0.05"
-            android:text="@string/lightpay_is_a_faster_means_of_payment_that_is_easier_to_use_for_transaction_that_involve_larger_sums_of_money_in_a_simple_and_faster_way_possible_saving_you_time_and_energy"/>
+            android:text="@string/lightpay_is_a_faster_means_of_payment_that_offers_a_top_notch_security_measures_offering_a_secure_channel_for_transactions_worldwide"/>
     </LinearLayout>
     <Button
         android:id="@+id/transactBtn"
@@ -55,7 +55,7 @@
         android:text="@string/transact"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:layout_marginStart="80dp"
         android:textSize="24sp"
         android:textAlignment="center"

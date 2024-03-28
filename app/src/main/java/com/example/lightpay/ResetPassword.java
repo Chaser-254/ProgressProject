@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ public class ResetPassword extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private EditText userEmail;
+    private ImageButton btn;
     private Button forgetPassword;
     private final static String TAG = "ResetPassword";
 
@@ -30,10 +32,19 @@ public class ResetPassword extends AppCompatActivity {
         setContentView(R.layout.activity_reset_password);
 
         progressBar = findViewById(R.id.progressBar);
+        btn = findViewById(R.id.back_reset_btn);
         userEmail = findViewById(R.id.reset_email);
         forgetPassword = findViewById(R.id.btnForgotPass);
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         forgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

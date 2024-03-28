@@ -42,7 +42,7 @@ public class depositFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        depositAPI = new depositAPI();
+        depositAPI = new depositAPI(requireContext());
 
 
         ImageButton creditCardButton = view.findViewById(R.id.creditCardButton);
@@ -212,6 +212,7 @@ public class depositFragment extends Fragment {
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
                 depositAPI.deposit(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(), paymentMethod, accountNumber, Double.parseDouble(amount));
+                Toast.makeText(getActivity(), "deposit successfully", Toast.LENGTH_SHORT).show();
             }
 
             @Override

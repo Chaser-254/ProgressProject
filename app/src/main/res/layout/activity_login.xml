@@ -112,23 +112,6 @@
         android:textSize="15sp"
         android:textStyle="normal" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/google_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/black"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:insetTop="0dp"
-        app:cornerRadius="60dp"
-        android:insetBottom="0dp"
-        app:icon="@drawable/google"
-        android:gravity="center"
-        app:iconSize="42dp"
-        android:background="@null"
-        app:iconTint="@null"
-        android:text="@string/login_using_google"/>
-
     <TextView
         android:id="@+id/text_register"
         android:layout_width="match_parent"

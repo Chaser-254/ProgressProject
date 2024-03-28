@@ -20,7 +20,13 @@ import android.widget.Toast;
 
 import com.example.lightpay.API.paybillAPI;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
@@ -35,8 +41,8 @@ public class PaybillFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_paybill, container, false);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        paybillAPI = new paybillAPI();
+        mAuth = FirebaseAuth.getInstance();
+        paybillAPI = new paybillAPI(requireContext());
 
         lipaMpesa = view.findViewById(R.id.lipaNaMpesa);
         billMpesa = view.findViewById(R.id.lipaNaPaybill);
@@ -140,35 +146,53 @@ public class PaybillFragment extends Fragment {
     }
 
     private void authorizeBiometrics(final String accountNumber, final String amount) {
-        Executor executor = ContextCompat.getMainExecutor(requireActivity());
-        BiometricPrompt biometricPrompt = new BiometricPrompt(PaybillFragment.this, executor, new BiometricPrompt.AuthenticationCallback() {
-            @Override
-            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                super.onAuthenticationError(errorCode, errString);
-                Toast.makeText(getActivity(), "Authentication error", Toast.LENGTH_SHORT).show();
-            }
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            Executor executor = ContextCompat.getMainExecutor(requireActivity());
+            BiometricPrompt biometricPrompt = new BiometricPrompt(PaybillFragment.this, executor, new BiometricPrompt.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                    super.onAuthenticationError(errorCode, errString);
+                    Toast.makeText(getActivity(), "Authentication error: " + errString, Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                super.onAuthenticationSucceeded(result);
-                String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-                String paymentMethod = "PayBill";
+                @Override
+                public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                    super.onAuthenticationSucceeded(result);
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    final DocumentReference userRef = db.collection("users").document(currentUser.getUid());
 
-                paybillAPI.payBill(userId, paymentMethod, accountNumber, amount);
-            }
+                    // Create a new transaction record
+                    Map<String, Object> transactionData = new HashMap<>();
+                    transactionData.put("paymentMethod", "PayBill");
+                    transactionData.put("accountNumber", accountNumber);
+                    transactionData.put("amount", Double.parseDouble(amount));
+                    transactionData.put("timestamp", FieldValue.serverTimestamp());
 
-            @Override
-            public void onAuthenticationFailed() {
-                super.onAuthenticationFailed();
-                Toast.makeText(getActivity(), "Authentication failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                    // Add the transaction record to the 'transactions' collection
+                    db.collection("payBill").add(transactionData)
+                            .addOnSuccessListener(documentReference -> {
+                                Toast.makeText(getActivity(), "Transaction successful", Toast.LENGTH_SHORT).show();
+                            })
+                            .addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to save transaction: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                }
 
-        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Confirm your fingerprints to complete the transfer")
-                .setSubtitle("Log in using your biometrics credentials")
-                .setNegativeButtonText("Use Account Password")
-                .build();
-        biometricPrompt.authenticate(promptInfo);
+                @Override
+                public void onAuthenticationFailed() {
+                    super.onAuthenticationFailed();
+                    Toast.makeText(getActivity(), "Authentication failed!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                    .setTitle("Confirm your fingerprints to complete the transaction")
+                    .setSubtitle("Log in using your biometrics credentials")
+                    .setNegativeButtonText("Use Account Password")
+                    .build();
+            biometricPrompt.authenticate(promptInfo);
+        } else {
+            Toast.makeText(getActivity(), "User not authenticated", Toast.LENGTH_SHORT).show();
+        }
     }
 }
+

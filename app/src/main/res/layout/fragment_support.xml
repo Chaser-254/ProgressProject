@@ -10,6 +10,18 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:text="Support"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="Email Address:"
         android:textColor="@color/white"
@@ -20,9 +32,9 @@
 
     <EditText
         android:id="@+id/emailEditText"
-        android:layout_width="360dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
+        android:layout_width="330dp"
+        android:layout_height="50dp"
+        android:padding="10dp"
         android:textSize="24sp"
         android:inputType="textEmailAddress"
         android:layout_marginStart="20dp"
@@ -42,13 +54,13 @@
         tools:ignore="HardcodedText" />
     <EditText
         android:id="@+id/titleEditText"
-        android:layout_width="360dp"
-        android:layout_height="wrap_content"
+        android:layout_width="330dp"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:textSize="24sp"
         android:inputType="text"
         android:layout_gravity="center_horizontal"
-        android:padding="15dp"
+        android:padding="10dp"
         android:background="@drawable/rounded_edittext"
         android:hint="@string/title" />
 
@@ -63,8 +75,8 @@
         android:layout_marginTop="20dp"/>
     <EditText
         android:id="@+id/bodyEditText"
-        android:layout_width="360dp"
-        android:layout_height="wrap_content"
+        android:layout_width="330dp"
+        android:layout_height="100dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:padding="50dp"

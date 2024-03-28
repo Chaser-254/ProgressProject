@@ -126,7 +126,7 @@
             android:textColor="@color/black"
             android:background="@drawable/rounded_edittext"
             android:textSize="16sp"
-            android:inputType="textPhonetic" />
+            android:inputType="phone" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -142,23 +142,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:backgroundTint="@color/dark_blue" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/RegisterWithGoogleBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/black"
-        style="@style/Widget.AppCompat.Button"
-        android:insetTop="0dp"
-        app:cornerRadius="60dp"
-        android:insetBottom="0dp"
-        app:icon="@drawable/google"
-        android:gravity="center"
-        app:iconSize="42dp"
-        android:background="@null"
-        app:iconTint="@null"
-        android:text="Register using Google"/>
 
     <TextView
         android:id="@+id/text_register1"

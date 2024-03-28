@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -96,26 +97,24 @@ public class profileActivity extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("SetTextI18n")
     private void retrieveBalance(String userId) {
-        db.collection("deposits").whereEqualTo("userId",userId)
+        db.collection("deposits")
+                .whereEqualTo("userId", userId)
                 .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()){
-                        double totalBalance = 0.0;
-
-                        for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())){
-                            if (document.contains("amount")){
-                                double amount = document.getDouble("amount");
-                                totalBalance += amount;
-                            }
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    double totalBalance = 0.0;
+                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                        if (document.contains("amount")) {
+                            double amount = document.getDouble("amount");
+                            totalBalance += amount;
                         }
-
-                        DecimalFormat decimalFormat = new DecimalFormat("#.##");
-                        textViewBalance.setText("Ksh." + decimalFormat.format(totalBalance));
-                    } else {
-                        textViewBalance.setText("Error retrieving balance");
                     }
+                    DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                    textViewBalance.setText("Ksh." + decimalFormat.format(totalBalance));
+                })
+                .addOnFailureListener(e -> {
+                    textViewBalance.setText("Error retrieving balance");
+                    Log.e("Retrieve Balance", "Error retrieving balance", e);
                 });
     }
 
@@ -190,7 +189,7 @@ public class profileActivity extends AppCompatActivity {
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
+                dialog.cancel();
             }
         });
         AlertDialog dialog = dialogBuilder.create();
@@ -204,14 +203,12 @@ public class profileActivity extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            // Email updated successfully, now update username in Firestore
                             db.collection("users").document(currentUser.getUid())
                                     .update("username", newUsername, "email", newEmail)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Toast.makeText(profileActivity.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
-                                            // Update TextViews with new username and email
                                             textViewEmail.setText(newEmail);
                                         }
                                     })

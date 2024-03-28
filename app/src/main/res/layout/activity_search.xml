@@ -6,8 +6,10 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
+    android:background="@drawable/dack"
     android:descendantFocusability="beforeDescendants"
     android:fitsSystemWindows="true"
+
     android:orientation="vertical"
     tools:context=".searchActivity">
 
@@ -42,8 +44,8 @@
             tools:ignore="ContentDescription,HardcodedText" />
     </RelativeLayout>
     <EditText
-        android:layout_width="380dp"
-        android:layout_height="60dp"
+        android:layout_width="330dp"
+        android:layout_height="50dp"
         android:hint="@string/search_transaction"
         android:layout_marginTop="10dp"
         android:padding="16dp"
